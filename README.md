@@ -1,7 +1,7 @@
 
 # OBD2 to MQTT Bridge
 
-Following Jaguar Land Rover's recent lockdown of their API, I put this this script together to help at least get EV State of Charge and other basic data from an I-Pace when it is connected to the home WiFi. The script basically provides a bridge between a WiFi version of an EL327 OBD-II interface, such as the VGate iCar Pro, and an MQTT broker, such that the data can then be used by home automation systems, such as openHAB.
+Following Jaguar Land Rover's recent lockdown of their API, I put this  script together to help at least get EV State of Charge and other basic data from an I-Pace when it is connected to the home WiFi. The script basically provides a bridge between a WiFi version of an ELM327 OBD-II interface, such as the VGate iCar Pro, and an MQTT broker, such that the data can then be used by home automation systems, such as openHAB.
 
 Credit to [dconlon](https://github.com/dconlon) for his wifi version of the OBD python library.
 
