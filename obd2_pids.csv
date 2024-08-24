@@ -1,0 +1,74 @@
+pid, name, desc, decoder_fn, units
+2076, TYRE_PRESSURE_1, Tyre Pressure 1, decode_int, kPa
+2077, TYRE_PRESSURE_2, Tyre Pressure 2, decode_int, kPa
+2078, TYRE_PRESSURE_3, Tyre Pressure 3, decode_int, kPa
+2079, TYRE_PRESSURE_4, Tyre Pressure 4, decode_int, kPa
+2A0A, TYRE_TEMP_1, Tyre Pressure 1, decode_temperature3, kPa
+2A0B, TYRE_TEMP_2, Tyre Pressure 2, decode_temperature3, kPa
+2A0C, TYRE_TEMP_3, Tyre Pressure 3, decode_temperature3, kPa
+2A0D, TYRE_TEMP_4, Tyre Pressure 4, decode_temperature3, kPa
+420A, 12V_BATTERY, 12 Volt Battery, decode_int_divide_by_10, volt
+4905, HV_BATTERY_TEMP_MAX, Maximum Battery Temperature, decode_temperature2, °C
+4906, HV_BATTERY_TEMP_MIN, Minimum Battery Temperature, decode_temperature2, °C
+4907, HV_BATTERY_TEMP_AVG, Average Battery Temperature, decode_temperature2, °C
+490C, HV_BATTERY_CURRENT, HV battery current flow, decode_current, amp
+490F, HV_BATTERY_VOLTAGE, HV battery voltage, decode_int_divide_by_100, volt
+4910, SOC,Average EV State of Charge, decode_int_divide_by_100, %
+492B, HV_BATTERY_TEMP_1, Battery Temperature - Plate 1, decode_temperature, °C
+492C, HV_BATTERY_TEMP_2, Battery Temperature - Plate 2, decode_temperature, °C
+492D, HV_BATTERY_TEMP_3, Battery Temperature - Plate 3, decode_temperature, °C
+492E, HV_BATTERY_TEMP_4, Battery Temperature - Plate 4, decode_temperature, °C
+492F, HV_BATTERY_TEMP_5, Battery Temperature - Plate 5, decode_temperature, °C
+4930, HV_BATTERY_TEMP_6, Battery Temperature - Plate 6, decode_temperature, °C
+9924, AMBIENT_TEMP, Ambient Temperature, decode_temperature2, °C
+A0A6, LOCATION, Location Long./Lat., decode_location, lat-lng
+DD01, ODOMETER, Odometer Kilometers, decode_int, km
+DD02, ECU_SUPPLY_VOLTAGE, ECU Supply Voltage, decode_int, volt
+DD04, CABIN_TEMP, Cabin Temperature, decode_temperature, °C
+DD09, SPEED, Vehicle Speed, decode_int, km/h
+4919, SOH_MIN, Minimum EV Battery State of Health, decode_int_divide_by_2, %
+4918, SOH_AVG, Average EV Battery State of Health, decode_int_divide_by_2, %
+491A, SOH_MAX, Maximum EV Battery State of Health, decode_int_divide_by_2, %
+
+
+###################################################################################################
+# NOTES:
+#
+# Known PIDs and conversion formulae: https://www.openvehicles.com/node/2423 -
+# NOTE we must prefix 22 for the mode in front of each PID (this is outside the normal modes, and used by some manufacturers for specific functionality)
+# '420a' : divided by 10 on ECU 733 shows you the main 12 volt voltage.
+# '4903' : Cell V Max, (A*256+B)/1000
+# '4904' : Cell V Min, (A*256+B)/1000
+# '4905':  Max battery temp (use pid 4906, 4907 for min and average), A/2-40
+# '490c' : Current flow HV battery, (A*256+B-32768)/40
+# '490f': HV battery voltage, (256*A+B)/100
+# '4910': Soc Avg, (256*A+B)/100
+# '4911': Soc Min, (256*A+B)/100
+# '4913', Max Regen, (256*A+B)/100
+# '4914': SOC Max, (256*A+B)/100
+# '4918': SOH Avg, A/2
+# '4919', SOH Max, A/2
+# '491a', SOH Min, A/2
+# 'a0a6', Location
+# 'dd04', Cabin temp, A-40
+# 'dd05', Ambient Temp, A-40. Better to use PID 9924 on ECU 733, A/2-40
+# 'dd09': Vehicle speed, A
+#
+#  PIDs on the TPMS ECU (751)::
+#  2076, 2077, 2078, 2079 are the pressure for the four wheels in kPa, just like the value in the API
+#  2A0A, 2A0B, 2A0c, 2A0D are the temperature of the tire. Formula is (value-50)
+#
+#  BECM (7E4): 6 x Battery temperature plates:  0x492B, 0x492C, 0x492D, 0x492E, 0x492F, 0x4930
+#  EV battery coolant inlet temperature sensor is on 7E4[7EC]:0x491C. The formula for those temperature is (value-40), and the result is in deg celcius
+#
+#  HVAC ECU (733)- PID 9854 ,9855 ,9856 ,9857 are 4 temp sensors for the four seats in the cabin, with a good guess for 9856 for the driver's seat, and 9857 for passenger's seat.  Formula is (value/5-16).
+#
+#  From ipaceforums.co.uk, granny charger voltage and current can be found on 7e5/22498f, voltage A*2, current B/5 (ish).
+#  Lat : 754/a0a6 (byte(0-3)), signed divided by 0x20000
+#  Lon: 754/a0a6 (byte(4-7)), signed divided by 0x20000
+#  Soc: 7e4/4910
+#  is_charging: negative value on 7e4/490c
+#
+#
+# On Driver Door Module (740), and Passenger Door Module (741) PID A49F is a 2 bytes value. The first byte = 01 when the window is closed, 0x10 when the window is half way, 0x03 when the window is fully open.
+# On Rear Driver Door Module (742), and Rear Passenger Door Module (743) PID A49F is a 2 bytes value. The second byte = 01 when the window is closed, 0x10 when the window is half way, 0x03 when the window is fully open.

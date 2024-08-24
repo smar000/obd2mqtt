@@ -1,0 +1,16 @@
+[Unit]
+Description=Car OBD Connector
+
+[Service]
+User=root
+Type=idle
+WorkingDirectory=/opt/scripts/obd2/obd2mqtt
+ExecStart=/usr/bin/python /opt/scripts/obd2/obd2mqtt/obd2mqtt.py
+Restart=on-failure
+RestartSec=60
+ExecStopPost=/opt/scripts/telegram/telegram-notify.sh obd2mqtt $SERVICE_RESULT $EXIT_CODE $EXIT_STATUS
+
+[Install]
+Alias=obd2mqtt
+WantedBy=multi-user.target
+#WantedBy=mosquitto.service

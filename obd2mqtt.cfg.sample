@@ -1,0 +1,15 @@
+[OBD]
+OBD_PORT = 172.16.2.99
+
+
+[MQTT]
+MQTT_PUB_TOPIC      = ipace/obd2mqtt
+MQTT_SUB_TOPIC      = ipace/obd2mqtt/_system/send_command
+MQTT_SERVER      = 172.16.2.1
+MQTT_USER        = <mqtt_user>
+MQTT_PASSWORD    = <mqtt_pw>
+MQTT_CLIENTID    = obd2mqtt
+MQTT_RETAIN      = False
+
+[MISC]
+DEBUG = False
